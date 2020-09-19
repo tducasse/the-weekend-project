@@ -20,14 +20,6 @@ const allowCors = fn => async (req, res) => {
   return await fn(req, res)
 }
 
-const getRepos = (data) => {
-  const repos = [];
-  for (repo in data) {
-    const name = repo.full_name;
-
-  }
-}
-
 const handler = async (req, res) => {
   const { user } = req.query
   if (!user) {
@@ -47,12 +39,17 @@ const handler = async (req, res) => {
 
   const readmes = await Promise.all(
     repos.map(
-      repo => octokit.repos.getReadme({
-        owner: user,
-        repo,
+      async repo => {
+        try {
+          return octokit.repos.getReadme({
+            owner: user,
+            repo,
+          });
+        } catch (e) {
+          return false;
+        }
       }
-      )
-    )
+    ).filter(Boolean)
   )
 
 
