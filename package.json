@@ -1,0 +1,23 @@
+{
+  "name": "the-weekend-project",
+  "version": "1.0.0",
+  "description": "![weekend-project](https://the-weekend-project.vercel.app/api/svg)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tducasse/the-weekend-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tducasse/the-weekend-project/issues"
+  },
+  "homepage": "https://github.com/tducasse/the-weekend-project#readme",
+  "dependencies": {
+    "@octokit/rest": "^18.0.6"
+  }
+}
