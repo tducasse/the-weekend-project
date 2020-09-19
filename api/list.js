@@ -55,7 +55,7 @@ const toSVG = (repos) => {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg">
     <defs>
       <filter x="0" y="0" width="1" height="1" id="solid">
-        <feFlood flood-color="lightblue"/>
+        <feFlood flood-color="white"/>
         <feComposite in="SourceGraphic" operator="xor"/>
       </filter>
     </defs>
