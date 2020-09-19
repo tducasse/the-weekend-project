@@ -29,13 +29,13 @@ const getRepos = (data) => {
 }
 
 const handler = async (req, res) => {
-  const {user} = req.query
+  const { user } = req.query
   if (!user) {
     res.status(400);
     res.send('ERROR: no user');
   }
 
-  const repos = await octokit.repos.listForUser({
+  const response = await octokit.repos.listForUser({
     username: user,
     type: "owner",
     sort: "updated",
@@ -43,8 +43,20 @@ const handler = async (req, res) => {
     per_page: 100,
   });
 
+  const repos = (response.data || []).map(repo => repo.name)
 
-  res.send(JSON.stringify(repos))
+  const readmes = await Promise.all(
+    repos.map(
+      repo => octokit.repos.getReadme({
+        owner: user,
+        repo,
+      }
+      )
+    )
+  )
+
+
+  res.send(readmes[0])
 }
 
 module.exports = allowCors(handler)
