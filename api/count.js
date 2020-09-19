@@ -60,30 +60,30 @@ const toSVG = (number) => `<svg
     rx="4.5"
     width="109"
     height="109"
-    stroke="#e1e4e8"
+    stroke="#4285f4"
     fill="#282c34"
     stroke-opacity="1"
   />
 
   <text
     x="50%"
-    y="60"
+    y="50"
     text-anchor="middle"
     font-family="Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji"
     font-weight="bold"
     font-size="30"
-    fill="#e06c75"
+    fill="#4285f4"
   >
     ${number}
   </text>
   <text
     x="50%"
-    y="90"
+    y="80"
     text-anchor="middle"
     font-family="Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji"
     font-weight="bold"
     font-size="10"
-    fill="#e06c75"
+    fill="#4285f4"
   >
     weekend project${number > 1 ? "s" : ""}
   </text>
