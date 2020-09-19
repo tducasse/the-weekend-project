@@ -22,11 +22,12 @@ const allowCors = (fn) => async (req, res) => {
     res.status(200).end();
     return;
   }
+  res.setHeader("Content-Type", "image/svg+xml");
   return await fn(req, res);
 };
 
-const getWeekendProjects = (readmes) => {
-  const repos = [];
+const countWeekendProjects = (readmes) => {
+  let count = 0;
   readmes.forEach((readme) => {
     const data = readme.result && readme.result.data;
     if (!data) {
@@ -39,33 +40,56 @@ const getWeekendProjects = (readmes) => {
     ) {
       return false;
     }
-    repos.push({ url: readme.repo.url, full_name: readme.repo.full_name });
+    count = count + 1;
   });
-  return repos;
+  return count;
 };
 
-const toHTML = (repos) => {
-  const data = repos
-    .map((repo) => `<li> <a href="${repo.url}">${repo.full_name}</a> </li>`)
-    .join("");
-  const html = `<!DOCTYPE html>
-  <html lang="en">
-  
-  <head>
-    <meta charset="utf-8">
-    <title>the-weekend-project</title>
-  </head>
-  
-  <body>
-    <span>Weekend Projects:</span>
-    <ul>
-      ${data}
-    </ul>
-  </body>
-  
-  </html>`;
-  return html;
-};
+const toSVG = (number) => `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  x="0"
+  y="0"
+  width="110"
+  height="110"
+  viewBox="0 0 110 110"
+  fill="none"
+>
+  <rect
+    x="0.5"
+    y="0.5"
+    rx="4.5"
+    width="109"
+    height="109"
+    stroke="#e1e4e8"
+    fill="#282c34"
+    stroke-opacity="1"
+  />
+
+  <text
+    x="50%"
+    y="60"
+    text-anchor="middle"
+    font-family="Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji"
+    font-weight="bold"
+    font-size="30"
+    fill="#e06c75"
+  >
+    ${number}
+  </text>
+  <text
+    x="50%"
+    y="90"
+    text-anchor="middle"
+    font-family="Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji"
+    font-weight="bold"
+    font-size="10"
+    fill="#e06c75"
+  >
+    weekend project${number > 1 ? "s" : ""}
+  </text>
+
+</svg>
+`;
 
 const handler = async (req, res) => {
   const { user } = req.query;
@@ -84,7 +108,6 @@ const handler = async (req, res) => {
 
   const repos = (response.data || []).map((repo) => ({
     name: repo.name,
-    full_name: repo.full_name,
     url: repo.html_url,
   }));
 
@@ -98,12 +121,12 @@ const handler = async (req, res) => {
             Accept: "application/vnd.github.v3.raw",
           },
         })
-        .then((result) => ({ result, repo }))
+        .then((result) => ({ result }))
         .catch(() => false)
     )
   );
 
-  res.send(toHTML(getWeekendProjects(readmes)));
+  res.send(toSVG(countWeekendProjects(readmes)));
 };
 
 module.exports = allowCors(handler);
