@@ -1,6 +1,4 @@
 const https = require('https');
-const URL = `https://img.shields.io/badge/weekend--project-what's%20this%3F-blue?link=&link=https://github.com/tducasse/the-weekend-project`;
-
 
 const allowCors = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
@@ -21,7 +19,7 @@ const allowCors = fn => async (req, res) => {
 }
 
 const handler = (req, res) => {
-  https.get(URL, (resp) => {
+  https.get(process.env.BADGE_URL, (resp) => {
     let data = '';
 
     resp.on('data', (chunk) => {
