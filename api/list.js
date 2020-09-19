@@ -29,17 +29,18 @@ const getRepos = (data) => {
 }
 
 const handler = async (req, res) => {
-  if (!req.query || !req.query.user) {
+  const {user} = req.query
+  if (!user) {
     res.status(400);
     res.send('ERROR: no user');
   }
 
   const repos = await octokit.repos.listForUser({
+    username: user,
     type: "owner",
     sort: "updated",
     direction: 'desc',
     per_page: 100,
-    username: req.query.user,
   });
 
   res.send(JSON.stringify(repos.map(repo => repo.full_name)))
