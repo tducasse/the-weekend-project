@@ -43,6 +43,8 @@ const handler = async (req, res) => {
     per_page: 100,
   });
 
+  console.log(JSON.stringify(repos))
+
   res.send(JSON.stringify(repos.map(repo => repo.full_name)))
 }
 
